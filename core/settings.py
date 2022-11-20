@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps's
-    'comanda',
+    'comandas',
 ]
 
 MIDDLEWARE = [
