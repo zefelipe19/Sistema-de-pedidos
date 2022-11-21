@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}Home{% endblock %}
+
+{% block 'content' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+        <div class="mt-3 col-5">
+            <form action="{% url 'home' %}" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Nova Comanda</legend>
+                    <label for="nome" class="form-label">Nome da Comanda</label>
+                    <input class="form-control" type="text" name="nome" id="nome">
+                    <input class="btn btn-primary mt-2" type="submit" value="Criar">
+                </fieldset>
+            </form>
+        </div>
+        
+        <hr>
+        
+        <div class="row">
+            {% for comanda in comandas %}
+            <div class="col-sm-6 mb-3">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ comanda.nome }}</h5>
+                    <p class="card-text">{{ comanda.data_hora }}</p>
+                    <a href="{% url 'comanda_datalhada' comanda.slug %}" class="btn btn-primary">Ver Comanda</a>
+                </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1>Você precisa fazer o login.</h1>
+        <h4>Faça login para poder acessar as comandas.</h4>
+    {% endif %}
+
+    
+{% endblock %}

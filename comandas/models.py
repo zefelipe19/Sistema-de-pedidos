@@ -9,7 +9,7 @@ class Comanda(models.Model):
     slug = models.SlugField(blank=True, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     is_visivel = models.BooleanField(default=False)
-    is_editavel = models.BooleanField(default=True)
+    is_editavel = models.BooleanField(default=False)
 
     class Mate:
         verbose_name = 'Comanda'
@@ -20,18 +20,24 @@ class Comanda(models.Model):
 
     def save(self):
         if not self.slug:
-            self.slug = slugify(f'posto-praia-cliente-{self.nome}-{self.id}')
+            self.slug = slugify(f'posto-praia-cliente-{self.nome}-{self.usuario}-{self.data_hora}')
         return super().save()
 
     def get_pedidos(self):
         pedidos = PedidoComanda.objects.filter(comanda__id=self.id)
         return pedidos
 
+    def get_comentarios(self):
+        comentarios = ComentarioComanda.objects.filter(comanda__id=self.id)
+        return comentarios
+
 
 class PedidoComanda(models.Model):
     nome = models.CharField(max_length=30)
+    quantidade = models.PositiveIntegerField()
     data_hora = models.DateTimeField(auto_now_add=True)
     comanda = models.ForeignKey(Comanda, on_delete=models.CASCADE)
+    quem_fez = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Mate:
         verbose_name = 'Pedido da Comanda'

@@ -11,14 +11,14 @@
     <link rel="stylesheet" href="{% static 'assets/base.css' %}">
 
     {% block 'head' %}{% endblock %}
-    <title>{% block 'title' %}{% endblock %}- Posto Praia</title>
+    <title>{% block 'title' %}{% endblock %} - Posto Praia</title>
 </head>
 <body>
     <header>
         <nav class="navbar bg-primary mb-3">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">
-                <img src="{% static 'assets/img/posto_praia_logo.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+              <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'assets/img/posto_praia_logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
                 Posto Praia
               </a>
             </div>

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}Comanda {{comanda.nome}}{% endblock %}
+
+{% block 'content' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        <h3>Comanda - {{comanda.nome}}</h3>
+        <p>Comanda criada por <span class="badge text-bg-success">{{comanda.usuario}}</span></p>
+        <div class="d-flex">
+            <div class="m-3 col-5">
+                <form action="{% url 'comanda_datalhada' comanda.slug %}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend >Novo Pedido</legend>
+                        <label for="nome" class="form-label">Nome do Pedido</label>
+                        <input class="form-control" type="text" name="nome" id="nome">
+                        <label for="quantidade" class="form-label">Quantidade</label>
+                        <input class="form-control" type="number" name="quantidade" id="quantidade">
+                        <input class="btn btn-primary mt-2" type="submit" value="Adcionar">
+                    </fieldset>
+                </form>
+            </div>
+            <div class="m-3 col-5">
+                <form action="{% url 'comanda_datalhada' comanda.slug %}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend>Comentar</legend>
+                        <label class="form-label"  for="comentario">Comentario</label>
+                        <input class="form-control" type="text" name="comentario" id="comentario">
+                        <input class="btn btn-primary mt-2" type="submit" value="Comentar">
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex">
+            <div class="m-3 col-5">
+                <h5>Área de pedidos</h5>
+                {% for pedido in comanda.get_pedidos %}
+                    <p>{{pedido.nome}} - {{pedido.quantidade}} - feito por <strong>{{pedido.quem_fez}}</strong>.</p>
+                {% endfor %}
+            
+            </div>
+            {% if comanda.get_comentarios %}
+            <hr>
+            <div class="m-3 col-5">
+                <h5>Área de comentários</h5>
+                {% for comentario in comanda.get_comentarios %}
+                    <p>{{comentario.comentario}} - <span class="badge text-bg-success">{{comanda.usuario}}</span></p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Apagar comanda
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Quer Apagar {{comanda.nome}}?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    Tem certeza que deseja apagar a comanda {{comanda.nome}}? 
+                    todos os pedidos serão removidos e a comanda, será apagada permanentemente.
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                    <a href="{% url 'deletar_comanda' comanda.slug %}" class="btn btn-danger">Sim, apagar comanda.</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
