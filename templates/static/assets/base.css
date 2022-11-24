@@ -1,5 +1,9 @@
 main {
-    height: 100vh;
+    height: 95%;
+}
+
+footer {
+    margin-top: 3vh;
 }
 
 .link-a {

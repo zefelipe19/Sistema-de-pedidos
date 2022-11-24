@@ -17,7 +17,7 @@
         <p>Comanda criada por <span class="badge text-bg-success">{{comanda.usuario}}</span></p>
         <div class="d-flex">
             <div class="m-3 col-5">
-                <form action="{% url 'comanda_datalhada' comanda.slug %}" method="post">
+                <form action="{% url 'comanda_detalhada' comanda.slug %}" method="post">
                     {% csrf_token %}
                     <fieldset>
                         <legend >Novo Pedido</legend>
@@ -30,7 +30,7 @@
                 </form>
             </div>
             <div class="m-3 col-5">
-                <form action="{% url 'comanda_datalhada' comanda.slug %}" method="post">
+                <form action="{% url 'comanda_detalhada' comanda.slug %}" method="post">
                     {% csrf_token %}
                     <fieldset>
                         <legend>Comentar</legend>
@@ -43,13 +43,14 @@
         </div>
         <hr>
         <div class="d-flex">
+            {% if comanda.get_pedidos %}
             <div class="m-3 col-5">
                 <h5>Área de pedidos</h5>
                 {% for pedido in comanda.get_pedidos %}
-                    <p>{{pedido.nome}} - {{pedido.quantidade}} - feito por <strong>{{pedido.quem_fez}}</strong>.</p>
+                    <p>{{pedido.nome}} - {{pedido.quantidade}}. Feito por <strong>{{pedido.quem_fez}}</strong>. <a class="btn btn-danger" href="{% url 'deletar_pedido' comanda.slug pedido.pk %}">Remover Pedido</a></p>
                 {% endfor %}
-            
             </div>
+            {% endif %}
             {% if comanda.get_comentarios %}
             <hr>
             <div class="m-3 col-5">

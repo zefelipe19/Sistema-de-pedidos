@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 # Project imports
 from .models import Comanda, PedidoComanda, ComentarioComanda
 
 
-class Home(View):
+class Home(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_authenticated:
             comandas = Comanda.objects.all().filter(usuario=request.user)
@@ -48,7 +49,7 @@ class ComandaDetalhe(View):
             )
             messages.success(request, f'Pedido de {nome_pedido} foi adicionado!')
             novo_pedido.save()
-            return redirect('comanda_datalhada', slug)
+            return redirect('comanda_detalhada', slug)
         
         comentario = request.POST.get('comentario')
         if comentario:
@@ -59,7 +60,7 @@ class ComandaDetalhe(View):
             )
             messages.success(request, f'Comentario foi adicionado!')
             novo_comentario.save()
-            return redirect('comanda_datalhada', slug)
+            return redirect('comanda_detalhada', slug)
 
 
 def deletar_comada(request, slug):
@@ -67,3 +68,10 @@ def deletar_comada(request, slug):
     messages.error(request, f'A comanda {comanda} foi apagada!')
     comanda.delete()
     return redirect('home')
+
+
+def deletar_pedido(request, slug, pk):
+    pedido = PedidoComanda.objects.get(pk=pk)
+    messages.error(request, f'O pedido de {pedido.nome} - {pedido.quantidade}, foi deletado.')
+    pedido.delete()
+    return redirect('comanda_detalhada', slug)

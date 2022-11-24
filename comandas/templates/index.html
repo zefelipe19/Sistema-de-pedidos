@@ -13,7 +13,7 @@
     {% endif %}
 
     {% if request.user.is_authenticated %}
-        <div class="mt-3 col-5">
+        <div class="mt-3 col-7">
             <form action="{% url 'home' %}" method="post">
                 {% csrf_token %}
                 <fieldset>
@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ comanda.nome }}</h5>
                     <p class="card-text">{{ comanda.data_hora }}</p>
-                    <a href="{% url 'comanda_datalhada' comanda.slug %}" class="btn btn-primary">Ver Comanda</a>
+                    <a href="{% url 'comanda_detalhada' comanda.slug %}" class="btn btn-primary">Ver Comanda</a>
                 </div>
                 </div>
             </div>

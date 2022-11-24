@@ -20,7 +20,7 @@ class Comanda(models.Model):
 
     def save(self):
         if not self.slug:
-            self.slug = slugify(f'posto-praia-cliente-{self.nome}-{self.usuario}-{self.data_hora}')
+            self.slug = slugify(f'posto-praia-cliente-{self.nome}-{self.usuario}-{str(self.data_hora)}')
         return super().save()
 
     def get_pedidos(self):
